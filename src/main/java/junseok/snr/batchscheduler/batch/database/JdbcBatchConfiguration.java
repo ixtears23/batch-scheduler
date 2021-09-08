@@ -11,6 +11,8 @@ import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
+import org.springframework.batch.item.validator.SpringValidator;
+import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -86,6 +88,20 @@ public class JdbcBatchConfiguration {
                 .processor(creditProcessor())
                 .writer(creditWriter)
                 .build();
+    }
+
+    @Bean
+    public ValidatingItemProcessor<CustomerCredit> itemProcessor() {
+        ValidatingItemProcessor<CustomerCredit> processor = new ValidatingItemProcessor<>();
+        processor.setValidator(validator());
+        return processor;
+    }
+
+    @Bean
+    public SpringValidator<CustomerCredit> validator() {
+        SpringValidator<CustomerCredit> validator = new SpringValidator<>();
+        validator.setValidator(new CustomCreditValidator());
+        return  validator;
     }
 
 }
