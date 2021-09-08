@@ -13,8 +13,11 @@ public class BatchSchedulerApplication implements ApplicationRunner {
         SpringApplication.run(BatchSchedulerApplication.class, args);
     }
 
+//    public static void main(String[] args) {
+//        System.exit(SpringApplication.exit(SpringApplication.run(BatchSchedulerApplication.class, args)));
+//    }
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        JobSchedule.execute();
     }
 }
