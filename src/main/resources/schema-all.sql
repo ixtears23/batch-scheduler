@@ -5,3 +5,10 @@ CREATE TABLE people  (
                          first_name VARCHAR(20),
                          last_name VARCHAR(20)
 );
+
+
+CREATE TABLE CUSTOMER (
+                          ID BIGINT IDENTITY PRIMARY KEY,
+                          NAME VARCHAR(45),
+                          CREDIT FLOAT
+);

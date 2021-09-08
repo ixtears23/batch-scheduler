@@ -1,5 +1,6 @@
 package junseok.snr.batchscheduler.web;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class BatchClientControllerRestTest {
-    
+
+    private static final String LOCAL_BASE_URL = "http://localhost";
+
     @LocalServerPort
     private int port;
 
@@ -19,11 +22,27 @@ class BatchClientControllerRestTest {
     private TestRestTemplate restTemplate;
     
     @Test
-    void startSampleTest() {
-        final String LOCAL_BASE_URL = "http://localhost";
-        final String TEST_URL = "/batch-client/start-sample";
-        final String RESULT = this.restTemplate.getForObject(String.format("%s:%s%s", LOCAL_BASE_URL, port, TEST_URL), String.class);
+    @DisplayName("FlatFileItemReader, JdbcItemWriter")
+    void startUserJobTest() {
+        final String TEST_URL = "/batch-client/start-user-job";
 
-        assertThat(RESULT).isEqualTo("BATCH 성공하신듯?");
+        final String RESULT = this.restTemplate.getForObject(getFullTestUrl(TEST_URL), String.class);
+
+        assertThat(RESULT).isEqualTo("Start UserJob Success");
     }
+
+    @Test
+    @DisplayName("JdbcCursorItemReader, JdbcItemWriter")
+    void startCreditJobTest() {
+        final String TEST_URL = "/batch-client/start-credit-job";
+
+        final String RESULT = this.restTemplate.getForObject(getFullTestUrl(TEST_URL), String.class);
+
+        assertThat(RESULT).isEqualTo("Start CreditJob Success");
+    }
+
+    private String getFullTestUrl(String TEST_URL) {
+        return String.format("%s:%s%s", LOCAL_BASE_URL, port, TEST_URL);
+    }
+
 }
